@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+	<div class="alert alert-primary alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+{% endfor %}
+
+{% if user_id == current_user.user_id or adm == True %}
+    <div class="card border-dark mb-3">
+        <div class="card-body text-dark">
+            <h1>Обновите информацию</h1><br/>
+            <form action="/update/{{ user_to_update.user_id }}" method="POST">
+                {{ form.hidden_tag() }}
+                {% for field, errors in form.errors.items() %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ form[field].label }}: {{ ', '.join(errors) }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {{ form.name(class="form-control", value=user_to_update.name, placeholder='Имя и фамилия') }}<br/>
+                {{ form.login(class="form-control", value=user_to_update.login, placeholder='Логин') }}<br/>
+                {{ form.mail(class="form-control", value=user_to_update.mail, placeholder='Электронная почта') }}<br/>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.gender(class="form-select", value=user_to_update.gender, placeholder='Пол') }}<br/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.age(class="form-control", value=user_to_update.age, placeholder='Возраст') }}<br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.country(class="form-control", value=user_to_update.country, placeholder='Страна') }}<br/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {{ form.city(class="form-control", value=user_to_update.city, placeholder='Город') }}<br/>
+                        </div>
+                    </div>
+                </div>
+                {{ form.level(class="form-control", value=user_to_update.level, placeholder='Уровень русского языка') }}<br/>
+                {{ form.native_langs(class="form-control", value=user_to_update.native_langs, placeholder='Родной язык') }}<br/>
+                <button class="btn btn-outline-dark" type="submit">Обновить информацию</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Вы не можете редактировать этого пользователя
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+{% endblock %}

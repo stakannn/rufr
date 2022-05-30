@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <div class="card border-dark mb-3">
+        <div class="card-body text-dark">
+            <div class="container">
+                {% if current_user.status == 'admin' %}
+                    <h2>{{ current_user.name }}</h2>
+                    <p><small><i>id: {{ current_user.user_id }} - {{ current_user.status }}</i></small></p>
+                    <a href="{{ url_for('logout') }}" type="button" class="btn btn-outline-danger">Выйти</a>
+                {% else %}
+                    <div class="row">
+                        <div class="col-8">
+                            <h2>{{ current_user.name }}</h2>
+                            <p><small><i>id: {{ current_user.user_id }} - {{ current_user.status }}</i></small></p>
+                            <p>Логин: {{ current_user.login }}</p>
+                            <p>Адрес электронной почты: {{ current_user.mail }}</p>
+                            <p>Родной язык: {{ current_user.native_langs }}</p>
+                            <p>Уровень русского языка: {{ current_user.level }}</p>
+                            <a href="{{ url_for('update_user', user_id=current_user.user_id) }}" type="button" class="btn btn-outline-dark">
+                                Редактировать профиль
+                            </a>
+                            <a href="{{ url_for('logout') }}" type="button" class="btn btn-outline-danger">Выйти</a>
+                        </div>
+                        <div class="col-4">
+                            <img src="static/pictures/default_pic.png" align="right">
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="card border-dark mb-3">
+        <div class="card-body text-dark">
+            {% if current_user.status == 'student' %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id ответа</th>
+                            <th scope="col">Дата и время ответа</th>
+                            <th scope="col">Номер упражнения</th>
+                            <th scope="col">Ответ</th>
+                            <th scope="col">Оценка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for answer in answers[::-1] %}
+                            {% if answer.answer %}
+                                <tr>
+                                    <td>{{ answer.answer_id }}</td>
+                                    <td>{{ answer.answer_timestamp }}</td>
+                                    <td>{{ answer.exercise_type_id}}.{{ answer.exercise_id }}</td>
+                                    <td>{{ answer.answer }}</td>
+                                    <td>{{ answer.grade }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% elif current_user.status == 'teacher' %}
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col">
+                            {{ form.sel.label() }}
+                        </div>
+                        <div class="col">
+                            {{ form.sel(class="form-select", size='1') }}
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-outline-dark" type="submit">Отфильтровать</button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id ответа</th>
+                            <th scope="col">Студент</th>
+                            <th scope="col">Дата и время ответа</th>
+                            <th scope="col">Номер упражнения</th>
+                            <th scope="col">Ответ</th>
+                            <th scope="col">Оценка</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            {% for answer in answers[::-1] %}
+                                {% if answer.answer %}
+                                    <tr>
+                                        <td>{{ answer.answer_id }}</td>
+                                        <td>{{ answer.user_id }}</td>
+                                        <td>{{ answer.answer_timestamp }}</td>
+                                        <td>{{ answer.exercise_type_id}}.{{ answer.exercise_id }}</td>
+                                        <td>{{ answer.answer }}</td>
+                                        <td>{{ answer.grade }}</td>
+                                        <td><a class="btn btn-outline-dark btn-sm" href="{{ url_for('set_grade', answer_id=answer.answer_id) }}" role="button">Поставить оценку</a></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                </table>
+            {% elif current_user.status == 'admin' %}
+                <a href="{{ url_for('add_teacher') }}" type="button" class="btn btn-outline-dark">Добавить нового преподавателя</a><br/><br/>
+                <h3>Список преподавателей</h3>
+                {% for teacher in teachers %}
+                    <div>
+                        {{ teacher.user_id }} - {{ teacher.name }} - {{ teacher.login }} - {{ teacher.mail }}
+                        <a href="{{ url_for('update_teacher', user_id = teacher.user_id) }}" type="button" class="btn btn-outline-dark btn-sm">Обновить профиль</a>
+                    </div><br/>
+                {% endfor %}
+                <h3>Список студентов</h3>
+                {% for student in students %}
+                    <div>
+                        {{ student.user_id }} - {{ student.name }} - {{ student.login }} - {{ student.mail }}
+                        <a href="{{ url_for('update_user', user_id = student.user_id) }}" type="button" class="btn btn-outline-dark btn-sm">Обновить профиль</a>
+                    </div><br/>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

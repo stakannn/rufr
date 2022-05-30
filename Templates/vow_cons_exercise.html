@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">{{ section }}</div>
+        <div class="card-body text-dark">
+            <h5 class="card-title">Задание: Выберите все гласные.</h5>
+            <p class="card-text">
+                {% if user_answer %}
+                    Вы ответили - {{ user_answer }}<br/>
+                    {% if user_answer == right_answer %}
+                        Верно!<br/>
+                        <a class="btn btn-outline-dark" href="http://127.0.0.1:5000/exercise/20/1" role="button">Следующее упражнение</a>
+                    {% else %}
+                        Ошибка :(<br/>Правильный ответ - {{ right_answer }}<br/>
+                        <a class="btn btn-outline-dark" href="http://127.0.0.1:5000/exercise/20/1" role="button">Следующее упражнение</a>
+                    {% endif %}
+                {% else %}
+                    {% for letter in letters %}
+                        {{ letter }}
+                    {% endfor %}<br/><br/>
+                    <form method="POST">
+                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" id="btncheck1" name="vc" value="{{ letters[0] }}">
+                            <label class="btn btn-outline-dark" for="btncheck1">{{ letters[0] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck2" name="vc" value="{{ letters[1] }}">
+                            <label class="btn btn-outline-dark" for="btncheck2">{{ letters[1] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck3" name="vc" value="{{ letters[2] }}">
+                            <label class="btn btn-outline-dark" for="btncheck3">{{ letters[2] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck4" name="vc" value="{{ letters[3] }}">
+                            <label class="btn btn-outline-dark" for="btncheck4">{{ letters[3] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck5" name="vc" value="{{ letters[4] }}">
+                            <label class="btn btn-outline-dark" for="btncheck5">{{ letters[4] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck6" name="vc" value="{{ letters[5] }}">
+                            <label class="btn btn-outline-dark" for="btncheck6">{{ letters[5] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck7" name="vc" value="{{ letters[6] }}">
+                            <label class="btn btn-outline-dark" for="btncheck7">{{ letters[6] }}</label>
+                            <input type="checkbox" class="btn-check" id="btncheck8" name="vc" value="{{ letters[7] }}">
+                            <label class="btn btn-outline-dark" for="btncheck8">{{ letters[7] }}</label>
+                            <br/><button class="btn btn-outline-dark" type="submit">Проверить</button>
+                        </div><br/><br/>
+                    </form>
+                {% endif %}
+            </p>
+        </div>
+    </div><br/>
+{% endblock %}

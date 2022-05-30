@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">№{{ exercise_id }} - {{ section }}</div>
+        <div class="card-body text-dark">
+            <h5 class="card-title">Задание: {{ task }}</h5>
+            <p class="card-text">
+                <iframe width="560" height="315" src="{{ video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% if user_answer %}
+                    {% if user_answer == right_answer %}
+                        <br/><br/>Верно!
+                        <br/><br/>
+                        {% if next_exercise %}
+                            <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                        {% endif %}
+                    {% else %}
+                        <br/>Ошибка<br/>
+                        <a class="btn btn-outline-dark" href="{{ this_exercise }}" role="button">Попробовать ещё раз</a>
+                        <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                    {% endif %}
+                {% else %}
+                    <form method="POST">
+                        {% for option in options %}<br/>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault0" value="{{ option[0] }}">
+                              <label class="form-check-label" for="flexRadioDefault0">
+                                  {{ option[1] }}
+                              </label>
+                            </div>
+                        {% endfor %}<br/>
+                        <button class="btn btn-outline-dark" type="submit">Проверить</button>
+                    </form>
+                {% endif %}
+            </p>
+        </div>
+    </div><br/>
+
+{% endblock %}
+
+

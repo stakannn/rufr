@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+	<div class="alert alert-primary alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+{% endfor %}
+
+
+<div class="card border-dark mb-3">
+    <div class="card-body text-dark">
+        Id студента: {{ answer_to_update.user_id }}<br/><br/>
+        Ответ студента: {{ answer_to_update.answer }}<br/><br/><br/>
+        <form action="/check/{{ answer_to_update.answer_id }}" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.user_answer(class="form-control", value=answer_to_update.grade, placeholder='Оценка') }}<br/>
+            <button class="btn btn-outline-dark" type="submit">Выставить оценку</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

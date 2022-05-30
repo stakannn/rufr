@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="card border-dark mb-3">
+            <div class="card-body text-dark">
+                <br/><h3>Расскажите о себе</h3><br/>
+                {% for field, errors in form.errors.items() %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ form[field].label }}: {{ ', '.join(errors) }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {{ form.name(class="form-control", placeholder='Имя и фамилия') }}<br/>
+                {{ form.login(class="form-control", placeholder='Логин') }}<br/>
+                {{ form.password_hash(class="form-control", placeholder='Пароль') }}<br/>
+                {{ form.password_hash2(class="form-control", placeholder='Повторите пароль') }}<br/>
+                {{ form.mail(class="form-control", placeholder='Электронная почта') }}<br/>
+            </div>
+        </div>
+        <button class="btn btn-outline-dark" type="submit">Зарегистрировать!</button>
+    </form><br/><br/>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">№{{ exercise_id }} - {{ section }}</div>
+        <div class="card-body text-dark">
+            <h5 class="card-title">Задание: {{ task }}</h5>
+            <p class="card-text">
+                <div>
+                    <img src="{{ picture }}">
+                </div>
+                {% if user_answer %}
+                    Ответ записан
+                    {% if next_exercise %}
+                        <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                    {% endif %}
+                {% else %}
+                    <br/>
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        {{ form.user_answer(class="form-control", rows="10") }}<br/><br/>
+                        <button class="btn btn-outline-dark" type="submit">Отправить</button><br/>
+                    </form>
+                {% endif %}
+            </p>
+        </div>
+    </div><br/>
+
+{% endblock %}

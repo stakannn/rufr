@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="list-group">
+        {% for res in result %}
+            <a href="{{ res.exercise_url }}" class="list-group-item list-group-item-action">{{ res.exercise_id }} ({{ res.exercise_level }})</a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">№{{ exercise_id }} - {{ section }}</div>
+        <div class="card-body text-dark">
+            <h5 class="card-title">Задание: {{ task }}</h5>
+            <p class="card-text">
+                {% if user_answers %}
+                    {% if user_answers == right_answer %}
+                        Верно!
+                        <br/><br/>
+                        {% if next_exercise %}
+                            <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                        {% endif %}
+                    {% else %}
+                        Ошибка :(<br/>
+                    {% endif %}
+                {% else %}
+                    <br/>
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        {{ items[0] }} {{ form.user_answer1() }}<br/><br/>
+                        {{ items[1] }} {{ form.user_answer2() }}<br/><br/>
+                        {{ items[2] }} {{ form.user_answer3() }}<br/><br/>
+                        {{ items[3] }} {{ form.user_answer4() }}<br/><br/>
+                        {{ items[4] }} {{ form.user_answer5() }}<br/><br/><br/>
+                        <button class="btn btn-outline-dark" type="submit">Проверить</button>
+                    </form>
+                {% endif %}
+            </p>
+        </div>
+    </div><br/>
+{% endblock %}

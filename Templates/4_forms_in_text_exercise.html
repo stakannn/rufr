@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">№{{ exercise_id }} - {{ section }}</div>
+        <div class="card-body text-dark">
+            <h5 class="card-title">Задание: {{ task }}</h5>
+            <p class="card-text">
+                {% if audio %}
+                    <audio controls="controls">
+                        <source src="static/audios/ily.mp3" type="audio/mpeg">
+                    </audio>
+                {% endif %}
+                {% if user_answers %}
+                    {% if user_answers == right_answer %}
+                        Верно!
+                        <br/><br/>
+                        {% if next_exercise %}
+                            <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                        {% endif %}
+                    {% else %}
+                        Ошибка<br/>
+                        <a class="btn btn-outline-dark" href="{{ this_exercise }}" role="button">Попробовать ещё раз</a>
+                        <a class="btn btn-outline-dark" href="{{ next_exercise }}" role="button">Следующее упражнение</a>
+                    {% endif %}
+                {% else %}
+                    <br/>
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        {{ parts[0][0] }} {{ form.user_answer1() }} {{ parts[0][1] }}<br/>
+                        {{ parts[1][0] }} {{ form.user_answer2() }} {{ parts[1][1] }}<br/>
+                        {{ parts[2][0] }} {{ form.user_answer3() }} {{ parts[2][1] }}<br/>
+                        {{ parts[3][0] }} {{ form.user_answer4() }} {{ parts[3][1] }}<br/>
+                        <br/><br/>
+                        <button class="btn btn-outline-dark" type="submit">Проверить</button>
+                    </form>
+                {% endif %}
+            </p>
+        </div>
+    </div><br/>
+{% endblock %}
